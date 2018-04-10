@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres:9.6-alpine
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'aitestingsecretpassword'
+      POSTGRES_DB: 'passenger'
+    volumes:
+      - pgdata:/docker-entrypoint-initdb.d/
+volumes:
+  pgdata:
+  # docker-compose -f docker-compose.yml up
