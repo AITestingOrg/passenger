@@ -3,6 +3,7 @@ package org.aitesting.passenger.model;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -19,7 +20,9 @@ public class Passenger {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-
+    // passwords will be stored elsewhere
+    // no CQRS
+    // use command pattern
     @NotBlank
     private String userName;
 
@@ -32,10 +35,11 @@ public class Passenger {
     @NotBlank
     private String firstName;
 
-    @NotEmpty
+    @NotBlank
     private String lastName;
 
-    @NotEmpty
+    @NotBlank
+    @Email(message = "Please provide a valid e-mail")
     private String email;
 
     @NotBlank

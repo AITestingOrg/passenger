@@ -18,7 +18,7 @@ public class Ride {
     private long id;
 
     @NotBlank
-    private String startStAddr;
+    private String startAddr;
 
     @NotBlank
     private String startCity;
@@ -47,7 +47,7 @@ public class Ride {
     enum Status {
         COMPLETE, INRIDE, INTRANSIT,
         CANCELLED, PENDING
-    }
+    } // remove enum and make a list of the rides
 
 
 }
