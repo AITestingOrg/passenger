@@ -1,6 +1,10 @@
 version: "3"
 
 services:
+  passenger:
+    build: ./
+    volumes:
+     - ./src:/usr/src/myapp    
   postgres:
     image: postgres:9.6-alpine
     ports:
