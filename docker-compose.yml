@@ -4,7 +4,9 @@ services:
   passenger:
     build: ./
     volumes:
-     - ./src:/usr/src/myapp    
+        - ./src:/usr/src/myapp
+    links:
+        - postgres        
   postgres:
     image: postgres:9.6-alpine
     ports:
@@ -17,4 +19,4 @@ services:
       - pgdata:/docker-entrypoint-initdb.d/
 volumes:
   pgdata:
-  # docker-compose -f docker-compose.yml up
+
