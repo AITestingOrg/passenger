@@ -1,11 +1,9 @@
-FROM openjdk:8-jre-alpine
-MAINTAINER MarvinAmari<contact@marvinamari.com>
-EXPOSE 8085
-RUN mkdir -p /app/
-WORKDIR /app/
-COPY build/libs/passenger-0.0.1-SNAPSHOT.jar /app/passenger.jar
-ENTRYPOINT ["java" , "-jar" , "/app/passenger.jar"]  
-
+FROM frolvlad/alpine-oraclejdk8:slim
+VOLUME /tmp
+ENV SPRING_PROFILES_ACTIVE=dev
+ADD build/libs/passenger-0.0.1.jar app.jar
+EXPOSE 8080
+ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /app.jar" ]
 
 
 

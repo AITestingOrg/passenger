@@ -4,19 +4,22 @@ services:
   passenger:
     build: ./
     volumes:
-        - ./src:/usr/src/myapp
+      - ./src:/usr/src/app
+    ports:
+      - '8080:8080'
     links:
-        - postgres        
+      - postgres
+    depends_on:
+      - postgres
   postgres:
-    image: postgres:9.6-alpine
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_DB: 'passenger_db'
+      POSTGRES_PASSWORD: 'aitestingsecretpassword'
+      POSTGRES_USER: admin
+      PGDATA: ./postgres-data
     ports:
       - '5432:5432'
-    environment:
-      POSTGRES_USER: 'postgres'
-      POSTGRES_PASSWORD: 'aitestingsecretpassword'
-      POSTGRES_DB: 'passenger'
     volumes:
-      - pgdata:/docker-entrypoint-initdb.d/
-volumes:
-  pgdata:
-
+      - ./db_volume:/var/lib/postgresql
