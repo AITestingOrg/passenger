@@ -1,3 +1,5 @@
+package passenger
+
 import org.springframework.cloud.contract.spec.Contract
 [
         Contract.make {
@@ -6,15 +8,25 @@ import org.springframework.cloud.contract.spec.Contract
                 method 'POST'
                 url 'api/v1/passenger'
                 headers {
-                    contextType(applicationJson())
+                    contentType(applicationJson())
                 }
-                body(
-                        //serialized JSON
-                )
+                body(   """
+                {
+                            "firstName" : "Jon",
+                            "lastName" : "Doe",
+                            "email" : "jondoe@yahoo.com",
+                            "streetAddress" : "6817 taft st",
+                            "city" : "Hollywood",
+                            "state" : "FL",
+                            "zip" : "33024",
+                            "phoneNumber" : "1800411pain"
+                            
+                }
+                """)
             }
             response {
                 status 200
-                body('''[]''')
+                body("""[]""")
                 headers{
                     contentType(applicationJson())
                 }
