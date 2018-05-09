@@ -1,44 +1,57 @@
 package org.aitesting.passenger.controllers;
 
 import org.aitesting.passenger.model.Passenger;
+import org.aitesting.passenger.model.PassengerDto;
 import org.aitesting.passenger.services.PassengerService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-
 import java.util.List;
 
 @RestController
-@RequestMapping(value="/passenger")
+@RequestMapping("api/v1")
 public class PassengerController {
+
 
     @Autowired
     private PassengerService passengerService;
 
+    private ModelMapper modelMapper = new ModelMapper();
 
 
-    @RequestMapping(value="/list", method= RequestMethod.GET)
-    public List<Passenger> getAllPassengers(){
+    @GetMapping(value="passenger/list")
+    public List<Passenger> getAllPassengers() {
         return passengerService.getList();
     }
 
-    @RequestMapping(value="/{passID}", method= RequestMethod.GET)
+    @GetMapping(value="passenger/{passID}")
     public Passenger getPassenger(@PathVariable long passID) {
         return passengerService.getPassenger(passID);
     }
 
-    @RequestMapping(value="/add", method= RequestMethod.POST)
-    public void addPassenger(@RequestBody Passenger passenger){
+    @PostMapping(value = "passenger")
+    public Passenger addPassenger(@RequestBody PassengerDto passengerDto){
+        Passenger passenger = convertToPassenger(passengerDto);
         passengerService.addPassenger(passenger);
+        return passenger;
     }
 
-    @RequestMapping(value="/{passID}", method = RequestMethod.PUT)
-    public void updatePassenger(@PathVariable long passID, @RequestBody Passenger passenger){
-        passengerService.updatePassenger( passID, passenger);
+    @PutMapping(value="passenger")
+    public void updatePassenger(@RequestBody Passenger passenger){
+        passengerService.updatePassenger(passenger);
     }
 
-    @RequestMapping(value = "/{passID}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "passenger/{passID}")
     public void deletePassenger(@PathVariable long passID){
         passengerService.deletePassenger(passID);
     }
+
+    private Passenger convertToPassenger(PassengerDto passengerDto) {
+        return modelMapper.map(passengerDto, Passenger.class);
+    }
+
+    private PassengerDto convertToPassengerDto(Passenger passenger) {
+        return modelMapper.map(passenger, PassengerDto.class);
+    }
+
 }
