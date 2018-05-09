@@ -31,41 +31,41 @@ With json body:
 
 ```
 {
-	"firstName": "Marvin",
-	"lastName": "Dore",
-	"email": "Marvin@yolo.com",
-	"streetAddress": "Black House",
-	"city": "Mars",
-	"state": "Pluto",
-	"zip": "town",
-	"phoneNumber": "null"
+	"firstName": "Passenger",
+	"lastName": "One",
+	"email": "passenger@service.com",
+	"streetAddress": "House One",
+	"city": "Hollywood",
+	"state": "Florida",
+	"zip": "33024",
+	"phoneNumber": "1800-123-4567"
 }
 ```
 
-### GET to api/v1/passenger
+#### GET to api/v1/passenger
 * Returns list of all passengers.
 
-### GET to api/v1/passenger/{id}
+#### GET to api/v1/passenger/{id}
 * Enter the passenger id received from the POST request in the {id} field to retrieve individual passenger.
 
-### PUT to api/v1/passenger/{id}
+#### PUT to api/v1/passenger/{id}
 
 With json body:
 
 ```
 {
-	"firstName": "Marvin",
-	"lastName": "Dore",
-	"email": "Marvin@yolo.com",
-	"streetAddress": "Black House",
-	"city": "Mars",
-	"state": "Pluto",
-	"zip": "town",
-	"phoneNumber": "null"
+	"firstName": "Passenger",
+	"lastName": "One",
+	"email": "passenger@service.com",
+	"streetAddress": "House One",
+	"city": "Hollywood",
+	"state": "Florida",
+	"zip": "33024",
+	"phoneNumber": "1800-123-4567"
 }
 ```
 
-### DELETE to api/v1/passenger/{id}
+#### DELETE to api/v1/passenger/{id}
 * Where id is the passenger id received from the POST request at creation.
 
 # Development
@@ -81,19 +81,19 @@ With json body:
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-### Prerequisites
+#### Prerequisites
 
 The following applications must have been installed in your system previous to run this application.
 
  - Java8
  - Postgresql
  
-### Installing
+#### Installing
 
-Check MySQL root and username and password on file:
+Check Postgresql root and username and password on file:
    src/main/resources/application.properties
    
-Create DB on MySQL:
+Create DB on Postgresql:
    passenger_db
 
 To build the microservice run command on root directory of the project:

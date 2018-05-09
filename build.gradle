@@ -38,7 +38,7 @@ sourceSets {
 
     test {
         groovy {
-            srcDirs = ['test/resources/passenger']
+            srcDirs = ['src/test/resources/contracts/passenger']
         }
     }
 }
@@ -104,6 +104,7 @@ dependencies {
     testCompile 'org.springframework.boot:spring-boot-starter-test'
     testCompile("org.springframework.cloud:spring-cloud-starter-contract-verifier:${verifierVersion}")
     testCompile("org.springframework.cloud:spring-cloud-contract-spec:${verifierVersion}")
+
 }
 
 dependencyManagement {
