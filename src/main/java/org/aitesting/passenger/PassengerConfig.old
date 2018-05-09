@@ -1,0 +1,96 @@
+package org.aitesting.passenger;
+
+import org.hibernate.jpa.HibernatePersistenceProvider;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.env.Environment;
+import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.Properties;
+
+@Configuration
+@PropertySource({ "classpath:application.properties" })
+@EnableJpaRepositories(
+        basePackages = "org.aitesting.passenger.model",
+        entityManagerFactoryRef = "userEntityManager",
+        transactionManagerRef = "userTransactionManager"
+)
+public class PassengerConfig {
+    @Autowired
+    private Environment env;
+
+//    @Bean
+//    @Primary
+//    public LocalContainerEntityManagerFactoryBean userEntityManager() {
+//        LocalContainerEntityManagerFactoryBean em
+//                = new LocalContainerEntityManagerFactoryBean();
+//        em.setDataSource(userDataSource());
+//        em.setPackagesToScan(
+//                new String[] { "org.aitesting.passenger.model" });
+//
+//        HibernateJpaVendorAdapter vendorAdapter
+//                = new HibernateJpaVendorAdapter();
+//        em.setJpaVendorAdapter(vendorAdapter);
+//        HashMap<String, Object> properties = new HashMap<>();
+//        properties.put("hibernate.hbm2ddl.auto",
+//                env.getProperty("hibernate.hbm2ddl.auto"));
+//        properties.put("hibernate.dialect",
+//                env.getProperty("hibernate.dialect"));
+//        em.setJpaPropertyMap(properties);
+//
+//        return em;
+//    }
+//@Bean
+//public DataSource h2DataSource() {
+//    return new EmbeddedDatabaseBuilder()
+//            .setType(EmbeddedDatabaseType.H2)
+//            .build();
+//}
+
+//    @Primary
+//    @Bean
+//    public LocalContainerEntityManagerFactoryBean factoryBean() {
+//        LocalContainerEntityManagerFactoryBean factory =
+//                new LocalContainerEntityManagerFactoryBean();
+//        factory.setDataSource(h2DataSource());
+//        factory.setPersistenceProviderClass(HibernatePersistenceProvider.class);
+//        //comment the following line if you want to use default META-INF/persistence.xml
+//        factory.setPersistenceXmlLocation("jpa/persistence.xml");
+//        Properties properties = new Properties();
+//        properties.setProperty("javax.persistence.schema-generation.database.action", "create");
+//        factory.setJpaProperties(properties);
+//        return factory;
+//    }
+
+    @Primary
+    @Bean
+    public DataSource userDataSource() {
+
+        DriverManagerDataSource dataSource
+                = new DriverManagerDataSource();
+        dataSource.setDriverClassName(
+                env.getProperty("org.postgresql.Driver"));
+        dataSource.setUrl(env.getProperty("jdbc:postgresql://postgres:5432/passenger_db"));
+        dataSource.setUsername(env.getProperty("admin"));
+        dataSource.setPassword(env.getProperty("aitestingsecretpassword"));
+
+        return dataSource;
+    }
+
+}
