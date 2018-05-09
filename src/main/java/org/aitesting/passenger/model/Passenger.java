@@ -29,7 +29,32 @@ public class Passenger {
     @Email(message = "Please provide a valid e-mail")
     private String email;
 
-    @NotNull
-    private int phoneNumber;
+    @NotBlank
+    private String streetAddress;
 
+    @NotBlank
+    private String city;
+
+    @NotBlank
+    private String state;
+
+    @NotBlank
+    private String zip;
+
+    @NotBlank
+    private String phoneNumber;
+
+    public Passenger(){}
+
+    public Passenger(String firstName, String lastName, String email, String streetAddress,
+                     String city, String state, String zip, String phoneNumber){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.streetAddress = streetAddress;
+        this.city = city;
+        this.state = state;
+        this.zip = zip;
+        this.phoneNumber = phoneNumber;
+    }
 }

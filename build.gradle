@@ -1,51 +1,114 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
 buildscript {
-	ext {
-		springBootVersion = '1.5.11.RELEASE'
-	}
-	repositories {
-		mavenCentral()
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-	}
+    ext {
+        springBootVersion = '1.5.6.RELEASE'
+        verifierVersion = '1.2.3.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.0.0'
+        classpath "org.springframework.cloud:spring-cloud-contract-gradle-plugin:${verifierVersion}"
+    }
+}
+
+plugins {
+
 }
 
 apply plugin: 'java'
-apply plugin: 'application'
 apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
+apply plugin: 'maven'
+apply plugin: 'spring-cloud-contract'
 
 
-group = 'org.aitesting'
-version = '0.0.1'
+version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
-repositories {
-	mavenCentral()
+sourceSets {
+//    main {
+//        groovy {
+//            srcDirs = ['src/groovy']
+//        }
+//    }
+
+    test {
+        groovy {
+            srcDirs = ['test/resources/passenger']
+        }
+    }
 }
 
+contracts {
+    packageWithBaseClasses = 'provider'
+    baseClassMappings {
+        baseClassMapping(".*passenger.*", "org.aitesting.passenger.provider.PassengerContractBase")
+    }
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'org.aitesting.passenger'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    providedRuntime
+}
 
 ext {
-	springCloudVersion = 'Edgware.SR3'
+    springCloudVersion = 'Dalston.SR1'
 }
 
 dependencies {
-	annotationProcessor("org.projectlombok:lombok:1.16.20")
-	compileOnly("org.projectlombok:lombok:1.16.20")
-	compile('org.springframework.boot:spring-boot-starter')
-	compile('org.springframework.boot:spring-boot-starter-data-jpa')
-	compile('org.springframework.boot:spring-boot-starter-web')
-	compile('org.springframework.cloud:spring-cloud-starter-eureka')
-	compile('org.liquibase:liquibase-core')
-	runtime('org.postgresql:postgresql')
-	testCompile('org.springframework.boot:spring-boot-starter-test')
+
+    // compile 'org.springframework.cloud:spring-cloud-starter-eureka'
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-amqp'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile 'org.springframework.boot:spring-boot-starter-data-rest'
+    compile 'org.springframework.boot:spring-boot-starter-logging'
+    compile group: 'org.modelmapper.extensions', name: 'modelmapper-spring', version: '1.1.3'
+    // Security between Microservices through API
+    compile 'org.springframework.boot:spring-boot-starter-tomcat'
+    //compile 'org.springframework.boot:spring-boot-starter-security'
+    //compile 'org.springframework.boot:spring-boot-starter-data-redis'
+    //compile 'org.springframework.session:spring-session'
+
+    // Use MySQL Connector-J
+    compile 'mysql:mysql-connector-java'
+
+
+    compile 'com.fasterxml.jackson.core:jackson-databind'
+    compile 'org.json:json:20090211'
+
+// https://mvnrepository.com/artifact/postgresql/postgresql
+    compile group: 'postgresql', name: 'postgresql', version: '9.0-801.jdbc4'
+
+    compile 'org.projectlombok:lombok'
+    compile 'io.springfox:springfox-swagger-ui:2.7.0'
+
+    // https://mvnrepository.com/artifact/com.jayway.restassured/spring-mock-mvc
+    testCompile group: 'com.jayway.restassured', name: 'spring-mock-mvc', version: '2.2.0'
+
+    testCompile 'org.codehaus.groovy:groovy-all:2.4.10'
+    testCompile 'io.rest-assured:rest-assured:3.1.0'
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+    testCompile("org.springframework.cloud:spring-cloud-starter-contract-verifier:${verifierVersion}")
+    testCompile("org.springframework.cloud:spring-cloud-contract-spec:${verifierVersion}")
 }
 
-
 dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-
-	}
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        mavenBom "org.springframework.cloud:spring-cloud-contract-dependencies:${verifierVersion}"
+    }
 }
