@@ -9,7 +9,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.ContextConfiguration;
 
 import static org.aitesting.passenger.helpers.TestConstants.ID;
 import static org.mockito.Mockito.verify;
@@ -18,7 +17,6 @@ import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 @DataJpaTest
 @RunWith(MockitoJUnitRunner.class)
-//@ContextConfiguration(classes = { PassengerConfig.class})
 public class PassengerServiceUnitTests {
 
     @InjectMocks

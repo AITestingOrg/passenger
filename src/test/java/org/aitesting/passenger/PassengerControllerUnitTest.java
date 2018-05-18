@@ -10,12 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.test.context.ContextConfiguration;
 
 import static org.aitesting.passenger.helpers.TestConstants.ID;
 import static org.junit.Assert.assertEquals;
@@ -24,7 +19,6 @@ import static org.mockito.Mockito.verify;
 
 @DataJpaTest
 @RunWith(MockitoJUnitRunner.class)
-//@ContextConfiguration(classes = { PassengerConfig.class})
 public class PassengerControllerUnitTest {
     //TODO:Create the remaining unit test and duplicate for the repository
     @Mock
