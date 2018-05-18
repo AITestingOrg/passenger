@@ -5,6 +5,8 @@ import org.aitesting.passenger.model.PassengerDto;
 import org.aitesting.passenger.services.PassengerService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -19,7 +21,7 @@ public class PassengerController {
     private ModelMapper modelMapper = new ModelMapper();
 
 
-    @GetMapping(value="passenger/list")
+    @GetMapping(value="passenger")
     public List<Passenger> getAllPassengers() {
         return passengerService.getList();
     }
@@ -30,10 +32,17 @@ public class PassengerController {
     }
 
     @PostMapping(value = "passenger")
-    public Passenger addPassenger(@RequestBody PassengerDto passengerDto){
-        Passenger passenger = convertToPassenger(passengerDto);
-        passengerService.addPassenger(passenger);
-        return passenger;
+    public ResponseEntity addPassenger(@RequestBody PassengerDto passengerDto){
+        try {
+            Passenger passenger = convertToPassenger(passengerDto);
+            passengerService.addPassenger(passenger);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(passenger);
+        }
+        catch(Exception e){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Passenger cannot be created");
+        }
     }
 
     @PutMapping(value="passenger")
