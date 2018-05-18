@@ -7,8 +7,6 @@ services:
       - ./src:/usr/src/app
     ports:
       - '8080:8080'
-    links:
-      - postgres
     depends_on:
       - postgres
   postgres:
@@ -23,3 +21,37 @@ services:
       - '5432:5432'
     volumes:
       - ./db_volume:/var/lib/postgresql
+#  user-service:
+#    image: aista/user-service
+#    container_name: user-service
+#    ports:
+#      - '8091:8091'
+#    depends_on:
+#      - mysql-server
+#      - discovery-service
+#
+#  mysql-server:
+#    image: mysql:5.7
+#    container_name: mysql_server
+#    volumes:
+#      - 'mysql-data:/var/lib/mysql:rw'
+#    restart: always
+#    ports:
+#      - '3306:3306'
+#    environment:
+#      MYSQL_USER:
+#      MYSQL_PASSWORD:
+#      MYSQL_ROOT_PASSWORD: 'root'
+#      MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+#      MYSQL_DATABASE: 'user_service'
+
+  discovery-service:
+    image: aista/discovery-service
+    container_name: discovery-service
+    ports:
+      - '8761:8761'
+    environment:
+      - 'eviction-internal-timer-in-ms: 1000'
+
+#volumes:
+#   mysql-data:
