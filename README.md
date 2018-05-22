@@ -1,4 +1,4 @@
-# Passenger CRUD Service
+# Passenger 
 Passenger is meant to create, store, and serve passengers as a framework for the REST API.
 
 
@@ -91,7 +91,7 @@ The following applications must have been installed in your system previous to r
 #### Installing
 
 Check Postgresql root and username and password on file:
-   src/main/resources/application.properties
+   src/main/resources/application.yml
    
 Create DB on Postgresql:
    passenger_db
@@ -104,21 +104,14 @@ To build the microservice run command on root directory of the project:
 
 Test http://localhost:8081/api/v1/passenger -GET
 
-## Deployment
-
--
 
 ## Built With
 
 * [Spring Boot](https://spring.io/docs) - Application Framework
 * [Gradle](https://docs.gradle.org/4.2/release-notes.html) - Dependency Management
 
-## Authors
-
-* **Marvin Dore**
-
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
-Passenger CRUD service
+Passenger
