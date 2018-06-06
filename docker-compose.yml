@@ -15,7 +15,7 @@ services:
     restart: always
     environment:
       POSTGRES_DB: 'passenger_db'
-      POSTGRES_PASSWORD: "aitestingsecretpassword"
+      POSTGRES_PASSWORD: "admin"
       POSTGRES_USER: "admin"
       PGDATA: ./postgres-data
     ports:
