@@ -11,7 +11,7 @@ import org.springframework.cloud.contract.spec.Contract
                 body($(consumer(file("passenger.json"))))
             }
             response {
-                status 200
+                status 404
             }
         }
 ]

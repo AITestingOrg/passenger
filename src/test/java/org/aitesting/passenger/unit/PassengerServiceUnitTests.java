@@ -1,4 +1,4 @@
-package org.aitesting.passenger;
+package org.aitesting.passenger.unit;
 
 import org.aitesting.passenger.interfaces.PassengerRepository;
 import org.aitesting.passenger.model.Passenger;
@@ -8,14 +8,14 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.aitesting.passenger.helpers.TestConstants.ID;
 import static org.mockito.Mockito.verify;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 
-@DataJpaTest
+@ActiveProfiles("test")
 @RunWith(MockitoJUnitRunner.class)
 public class PassengerServiceUnitTests {
 

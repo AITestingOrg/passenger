@@ -10,4 +10,3 @@
    phone_number varchar(20) not null,
    primary key (id)
  );
-
