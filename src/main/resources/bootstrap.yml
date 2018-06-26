@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: passenger
+  profiles:
+    active: dev
+  cloud:
+    config:
+      uri: http://localhost:8080
+      enabled: true
