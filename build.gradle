@@ -1,42 +1,109 @@
 buildscript {
-	ext {
-		springBootVersion = '1.5.11.RELEASE'
-	}
-	repositories {
-		mavenCentral()
-	}
-	dependencies {
-		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-	}
+    ext {
+        springBootVersion = '1.5.6.RELEASE'
+        verifierVersion = '1.2.3.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.0.0'
+        classpath "org.springframework.cloud:spring-cloud-contract-gradle-plugin:${verifierVersion}"
+    }
+}
+
+plugins {
+
 }
 
 apply plugin: 'java'
+apply plugin: 'groovy'
 apply plugin: 'eclipse'
+apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'maven'
+apply plugin: 'spring-cloud-contract'
 
-group = 'org.aitesting'
+
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
-repositories {
-	mavenCentral()
+sourceSets {
+    test {
+        groovy {
+            srcDirs = ['src/test/resources/contracts/passenger']
+        }
+    }
 }
 
+contracts {
+    baseClassMappings {
+        baseClassMapping(".*passenger.*", "org.aitesting.passenger.provider.PassengerContractBase")
+    }
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'org.aitesting.passenger'
+    }
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url = 'https://dl.bintray.com/palantir/releases'
+    }
+}
+
+configurations {
+    providedRuntime
+}
 
 ext {
-	springCloudVersion = 'Edgware.SR3'
+    springCloudVersion = 'Dalston.SR1'
 }
 
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter-data-jpa')
-	compile('org.springframework.boot:spring-boot-starter-web')
-	compile('org.springframework.cloud:spring-cloud-starter-eureka')
-	runtime('org.postgresql:postgresql')
-	testCompile('org.springframework.boot:spring-boot-starter-test')
+    compile 'mysql:mysql-connector-java'
+    compile 'org.json:json:20090211'
+    compile 'org.projectlombok:lombok'
+    compile 'io.springfox:springfox-swagger-ui:2.7.0'
+    compile 'com.fasterxml.jackson.core:jackson-databind'
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-amqp'
+    compile 'org.springframework.boot:spring-boot-starter-data-jpa'
+    compile 'org.springframework.boot:spring-boot-starter-data-rest'
+    compile 'org.springframework.boot:spring-boot-starter-logging'
+    compile 'org.springframework.boot:spring-boot-starter-tomcat'
+    compile 'org.springframework.cloud:spring-cloud-starter-eureka'
+    compile group: 'org.postgresql', name: 'postgresql', version: '42.2.2'
+    compile group: 'io.rest-assured', name: 'spring-mock-mvc', version: '3.1.0'
+    compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-contract-stub-runner', version: '1.2.4.RELEASE'
+
+    testCompile 'org.codehaus.groovy:groovy-all:2.4.10'
+    testCompile 'io.rest-assured:rest-assured:3.1.0'
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
+    testCompile('com.palantir.docker.compose:docker-compose-rule-junit4:0.33.0')
+    testCompile("org.springframework.cloud:spring-cloud-starter-contract-verifier:${verifierVersion}")
+    testCompile("org.springframework.cloud:spring-cloud-contract-spec:${verifierVersion}")
+// https://mvnrepository.com/artifact/com.h2database/h2
+    testCompile group: 'com.h2database', name: 'h2', version: '1.4.197'
+
+
 }
 
+test {
+    testLogging {
+        events "failed"
+        exceptionFormat "full"
+    }
+}
 dependencyManagement {
-	imports {
-		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-	}
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+        mavenBom "org.springframework.cloud:spring-cloud-contract-dependencies:${verifierVersion}"
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:Finchley.RC1"
+    }
 }
