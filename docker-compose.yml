@@ -25,7 +25,6 @@ services:
 
   discoveryservice:
     image: aista/eureka
-    container_name: discoveryservice
     ports:
       - '8761:8761'
     environment:
