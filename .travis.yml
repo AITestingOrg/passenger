@@ -1,4 +1,28 @@
 language: java
 jdk:
-  - oraclejdk8
-encoding: utf8
+- oraclejdk8
+sudo: required
+services:
+- postgresql
+env:
+  global:
+  - secure: XeGsMudaWuVgGUd/MQn2aW9lq9oGlhnC3qLqSBnvuYpjws6MNQ+1C75A/xaCBpXmBJoBWNXndTs07AdhTUREBthf3VrmU/WAaB7F0NmEEbsETc/bN6kqZXJBlVfPaJx8Fk/aNzc5o64Wd7xN+swsZ3+5XW3sszugvZnj7zj7NYN8g4sKxYTKWmqto8+4lA+NKg/6FsaYuapL6reau/NuiCli5fagd5QRYwDuzDLaMKN+gHN4yoMmyU9rp8lExNvgs4qoDCay736Zz1JnqFy2oWFFUMA7QGd/7asvzKvLGw0ycGcj+llypyh+D/TLm1qTi/3f859PR5Fl0pRSNwygU7pcppn7DByIHAgTmH2nXuZ4P3GUcBeyoIG/3UEErvn7l8Nr4KKGiOha+9cwVqUrEL41fUvgWoV5QXPmXaIBQtzcBpjK2fSvFVRj06RqkpbtsM6a12UShP7d1CVsG6Ne1Vu5scdrtpoaLkryvIPuDYw+iCDxtIXx2fBXR6r8MshXG7ZIoROyM24zvBQ9B2bcRcmhoXIwXqBK1j6cm0K1Dhice92AoCLoVvpO5A/VW+0UNMXxSipqIW/JUqlSsZ2DBNbneobfkWmCeq3cUS0hvy1tRYctKIyOyoAVbmxG3tfS8Lf+xPVPT59P83R0UMiBiImigiPumCzA3UcMQRhBPlA=
+  - secure: N9p4apfRZFHvbHehiEspRIepxER1o5NGAg4dthdQUBbXB/IVmMj9qJOkV0zaaLwaWZO2Z13W2hUBTr0Zc8wi/ECWxPJgH6WzKk281jOLtwbnFFY/SWKZxRn0gk5JGNzg/J2Yfb+3A8VbmvA4uWQ4/ENU2wwON1IYFFTATnnY4ds2eO0Patqv+o7rUeGer/i0+QnrgvMWcGALOD8aZPXh7IEg/cQ1IECu87H5PCX8y/J0oI61FsACG3Oa0QeQjFmlCnML38md8vcFk3DrT/tTl8HqrO0qRJPQX+DQnaBUgr0JszQW+wg3O4klAA1d0Hkic/exDTwTo29ZeY7flayGEa3DrYHrsfg8SibxDKP3jQQ6SMK3AalnWDCuoj7vX/bKwm7ElYpjDwVlQA7usu/MsyGXQnQh/wpOv2kxbtXDJ4VQufu62WJ/vLCF3l0J0FnDSE8l5HM+rYLWu0XjevkN/e8ehOsjpD34enjMyUsbaZx3Qk6PUdocvFnF0PC3+CVrLgH22PnYuR3W7zzIJPBaihLwV47ZfTDOcDSSvGZW+jG/syiFxqz0yiXZz0HQ2oOm7V60qTytd+p1e0ltPfm96xdZaLbVl1rJvRvx27g/TybFoqYdjmiVOK3C53mATZX2YdtLo4sw3OFJM8CaN/08vOZKUvyEo+A0PNaZMTzB7Bw=
+before_install:
+- echo "Testing Docker Hub credentials"
+- docker -v
+- docker login -u=$DOCKER_USERNAME -p=$DOCKER_PASSWORD
+- echo "Docker Hub credentials are working"
+after_success:
+- export ACTUAL_BRANCH=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH;
+  else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+- echo "Test Success - Branch($TRAVIS_BRANCH) Actual($ACTUAL_BRANCH) Pull Request($TRAVIS_PULL_REQUEST)
+  Tag($TRAVIS_TAG) Commit($TRAVIS_COMMIT) PR($TRAVIS_PULL_REQUEST) Build($TRAVIS_BUILD_NUMBER)"
+- if [[ "$ACTUAL_BRANCH" == "master" ]]; then echo -e "Push Container to Docker Hub";
+  fi
+- docker login -u=$DOCKER_USERNAME -p=$DOCKER_PASSWORD
+- export REPO=aista/passenger
+- export TAG=`if [ "$ACTUAL_BRANCH" == "master" ]; then echo "latest";else echo "";
+  fi`
+- docker build -f Dockerfile -t $REPO:$TAG .
+- docker push $REPO
