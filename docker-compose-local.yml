@@ -2,7 +2,7 @@ version: "3"
 
 services:
   passenger:
-    image: aista/passenger
+    build: ./
     volumes:
       - ./src:/usr/src/app
     ports:
