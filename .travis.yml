@@ -26,3 +26,9 @@ after_success:
   fi`
 - docker build -f Dockerfile -t $REPO:$TAG .
 - docker push $REPO
+notifications:
+  slack:
+    rooms:
+      secure: Sk7lumGTiskvuivWAjCgAlrX/yDlrVj1azNFycFCtE48rWkarpAxWtMDoq82SJ73OUDnydynF8+MPW/7dF3ToAOIA486LdP4KCI/Y9UfY96BpVUyT31PN1y496gz/WjT0tTBKtymyWMdK8KU7I8L711mVzJGBaTy2gJivFKJ5DUy2hN7Smm7GECFgCQZ3mlFj34iM7orgkZSr2BR8AfTomYbax2QLfwEJxHN5hYg50i3irzeJk2OOtoEv4TuyRflLfgXn33LA/f6vWckl99iegXegsvHgIUqvfEer0nC7u4xRIgjwVKz58rUaZI5Y4zM1qcRqY5sSodOjvEXo4wmqbsp218KLBhxQfYXD2dsmWZM8S0rLbwBKM3/t1NSOJDDfo8TQAfvH36sCOXhH0flQoUOrbdkcWjJ8v6oe23PSvGgm90lTWMtc0B+oIXGtE28d3jcXSiSQYEjvtA2LNzvApULBsq+2CvOCUo03EeCc1vdo9YM9wSRiZWB8t26FNko67nXd+M7YAWIWvNCOUESUKV1KEXT4RKIW3QazQnlNUgtTF1/xVGl5TsMTnRYIzJluC8RKx3/0jD/oV6zhfKpAEpIutAEzbsc5phn1dFCYTF2RcVEru4pNzz6408dIK+UJRNL0st/d6fpmDpOhRf2YQSTxcgHoVBsqMzhwIopmB4=
+    on_success: always
+    on_failure: always
